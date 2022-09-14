@@ -7,8 +7,8 @@ export default function App() {
   const [nodes, setNodes] = React.useState({});
   const { model, dataset } = useRootEngine(nodes, engine);
   const result = JSON.stringify({
-    model: "default" || model,
-    dataset:"default" ||dataset
+    model: model || "default",
+    dataset: dataset || "default"
   });
   return (
     <div className="App" style={{ width: 800, height: 600 }}>
