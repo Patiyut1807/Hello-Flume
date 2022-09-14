@@ -1,38 +1,46 @@
-import { RootEngine } from 'flume'
-import config from './config'
+import { RootEngine } from "flume";
+import config from "./config";
 
-const resolvePorts = (portType, data) => {
-    switch (portType) {
-      case 'string':
-        return data.string
-      case 'boolean':
-        return data.boolean
-      case 'number':
-        return data.number
+const engine = new RootEngine(
+  config,
+  (type, data) => {
+    switch (type) {
+      case "string":
+        return data.string;
+      case "boolean":
+        return data.boolean;
+      case "number":
+        return data.number;
+      case "color":
+        return data.color;
       default:
-        return data
+        return {};
     }
-  }
-
-  const resolveNodes = (node, inputValues, nodeType, context) => {
+  },
+  (node, inputValues) => {
     switch (node.type) {
-      case 'string':
-        return { string: inputValues.string }
-      case 'boolean':
-        return { boolean: inputValues.boolean }
-      case 'number':
-        return { number: inputValues.number }
-      case 'user':
-        return context.user
-      case 'joinText':
-        return { joinedText: inputValues.string1 + inputValues.string2 }
-      case "reverseBoolean":
-        return { boolean: !inputValues.boolean }
+      case "string":
+        return { string: inputValues.string };
+      case "boolean":
+        return { boolean: inputValues.boolean };
+      case "number":
+        return { number: inputValues.number };
+      case "color":
+        return { color: inputValues.color };
+      case "window":
+        return { width: window.innerWidth, height: window.innerHeight };
+      case "addNumbers":
+        return { result: inputValues.num1 + inputValues.num2 };
+      case "subtractNumbers":
+        return { result: inputValues.num1 - inputValues.num2 };
+      case "multiplyNumbers":
+        return { result: inputValues.num1 * inputValues.num2 };
+      case "divideNumbers":
+        return { result: inputValues.num1 / inputValues.num2 };
       default:
-        return inputValues
+        return {};
     }
   }
-  
-const engine = new RootEngine(config)
+);
 
-export default engine
+export default engine;

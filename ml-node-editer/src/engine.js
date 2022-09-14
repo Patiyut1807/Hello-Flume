@@ -13,14 +13,10 @@ const resolvePorts = (portType, data) => {
   }
   const resolveNodes = (node, inputValues, nodeType, context) => {
     switch (node.type) {
-      case 'datasetA':
-        return 'datasetA'
-      case 'datasetB':
-        return 'datasetB'
-      case 'modelA':
-        return 'modelA'
-      case 'modelB':
-        return 'modelB'
+      case 'dataset':
+        return {dataset: inputValues.dataset}
+      case 'model':
+        return {model: inputValues.model}
       default:
         return inputValues
     }

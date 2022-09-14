@@ -1,24 +1,27 @@
 import React from "react";
-import { NodeEditor } from "flume";
+import { NodeEditor, useRootEngine } from "flume";
 import config from "./config";
+import engine from "./engine";
 
 export default function App() {
   const [nodes, setNodes] = React.useState({});
+  const { model, dataset } = useRootEngine(nodes, engine);
+  const result = JSON.stringify({
+    model: "default" || model,
+    dataset:"default" ||dataset
+  });
   return (
-    <div style={{ width: 800, height: 600 }}>
+    <div className="App" style={{ width: 800, height: 600 }}>
       <NodeEditor
-        portTypes={config.portTypes}
         nodeTypes={config.nodeTypes}
+        portTypes={config.portTypes}
         nodes={nodes}
-        onChange={setNodes}
-        defaultNodes={[
-          {
-            type: "trainfunc",
-            x: 190,
-            y: -150,
-          },
-        ]}
+        onChange={(nodes) => setNodes(nodes)}
+        defaultNodes={[{ type: "trainfunc", x: 200, y: 50 }]}
       />
+      <h1>Result</h1>
+      
+      <h2>{result}</h2>
     </div>
   );
 }

@@ -1,157 +1,153 @@
-import { FlumeConfig, Colors, Controls } from 'flume'
+import { FlumeConfig, Colors, Controls } from "flume";
 
-const config = new FlumeConfig()
+const colorOptions = [
+  "TOMATO",
+  "MEDIUMSLATEBLUE",
+  "PALEGREEN",
+  "HONEYDEW",
+  "PLUM",
+  "BLACK",
+  "WHITE"
+].map(c => ({
+  value: c.toLowerCase(),
+  label: `${c[0]}${c.slice(1).toLowerCase()}`
+}));
+
+const config = new FlumeConfig();
 config
   .addPortType({
     type: "string",
     name: "string",
     label: "Text",
     color: Colors.green,
-    controls: [
-      Controls.text({
-        name: "string",
-        label: "Text"
-      })
-    ]
-  })
-  .addNodeType({
-    type: "string",
-    label: "Text",
-    description: "Outputs a string of text",
-    inputs: ports => [
-      ports.string()
-    ],
-    outputs: ports => [
-      ports.string()
-    ]
+    controls: [Controls.text({ label: "Text", name: "string" })]
   })
   .addPortType({
     type: "boolean",
     name: "boolean",
-    label: "True/False",
+    label: "Boolean",
     color: Colors.blue,
-    controls: [
-      Controls.checkbox({
-        name: "boolean",
-        label: "True/False"
-      })
-    ]
-  })
-  .addNodeType({
-    type: "boolean",
-    label: "True/False",
-    description: "Outputs a true/false value",
-    initialWidth: 140,
-    inputs: ports => [
-      ports.boolean()
-    ],
-    outputs: ports => [
-      ports.boolean()
-    ]
+    controls: [Controls.checkbox({ label: "Boolean", name: "boolean" })]
   })
   .addPortType({
     type: "number",
     name: "number",
     label: "Number",
     color: Colors.red,
+    controls: [Controls.number({ label: "Number", name: "number" })]
+  })
+  .addPortType({
+    type: "color",
+    name: "color",
+    label: "Color",
+    color: Colors.pink,
     controls: [
-      Controls.number({
-        name: "number",
-        label: "Number"
+      Controls.select({
+        label: "Colors",
+        name: "color",
+        options: colorOptions,
+        placeholder: "[Select a Color]"
       })
     ]
+  })
+  
+  .addNodeType({
+    type: "string",
+    label: "Text",
+    initialWidth: 150,
+    inputs: ports => [ports.string()],
+    outputs: ports => [ports.string()]
+  })
+  .addNodeType({
+    type: "boolean",
+    label: "Boolean",
+    initialWidth: 110,
+    inputs: ports => [ports.boolean()],
+    outputs: ports => [ports.boolean()]
   })
   .addNodeType({
     type: "number",
     label: "Number",
-    description: "Outputs a numeric value",
-    initialWidth: 160,
-    inputs: ports => [
-      ports.number()
-    ],
-    outputs: ports => [
-      ports.number()
-    ]
+    initialWidth: 140,
+    inputs: ports => [ports.number()],
+    outputs: ports => [ports.number()]
   })
-  .addRootNodeType({
-    type: "homepage",
-    label: "Homepage",
-    initialWidth: 170,
+  .addNodeType({
+    type: "color",
+    label: "Color",
+    initialWidth: 160,
+    inputs: ports => [ports.color()],
+    outputs: ports => [ports.color()]
+  })
+  .addNodeType({
+    type: "output",
+    label: "Website Attributes",
+    initialWidth: 160,
+    root: true,
     inputs: ports => [
-      ports.string({
-        name: "title",
-        label: "Title"
-      }),
-      ports.string({
-        name: "description",
-        label: "Description"
-      }),
-      ports.boolean({
-        name: "showSignup",
-        label: "Show Signup"
+      ports.string({ name: "title", label: "Title" }),
+      ports.string({ name: "subtitle", label: "Subtitle" }),
+      ports.color({ name: "background", label: "Background Color" }),
+      ports.number({
+        name: "flumeWidth",
+        label: "Flume Width",
+        noControls: true
       }),
       ports.number({
-        name: "copyrightYear",
-        label: "Copyright Year"
+        name: "flumeHeight",
+        label: "Flume Height",
+        noControls: true
       })
     ]
   })
   .addNodeType({
-    type: "user",
-    label: "User",
-    description: "Outputs attributes of the current user",
-    initialWidth: 130,
-    outputs: ports => [
-      ports.string({
-        name: "firstName",
-        label: "First Name"
-      }),
-      ports.string({
-        name: "lastName",
-        label: "Last Name"
-      }),
-      ports.boolean({
-        name: "isLoggedIn",
-        label: "Is Logged-In"
-      }),
-      ports.boolean({
-        name: "isAdmin",
-        label: "Is Admin"
-      })
-    ]
-  })
-  .addNodeType({
-    type: "joinText",
-    label: "Join Text",
-    description: "Combines two strings of text into one string",
-    initialWidth: 160,
-    inputs: ports => [
-      ports.string({
-        name: "string1",
-        label: "First text"
-      }),
-      ports.string({
-        name: "string2",
-        label: "Second text"
-      })
-    ],
-    outputs: ports => [
-      ports.string({
-        name: "joinedText",
-        label: "Joined Text"
-      }),
-    ]
-  })
-  .addNodeType({
-    type: "reverseBoolean",
-    label: "Reverse True/False",
-    description: "Reverses a true/false value",
+    type: "window",
+    label: "Window",
     initialWidth: 140,
-    inputs: ports => [
-      ports.boolean(),
-    ],
     outputs: ports => [
-      ports.boolean(),
+      ports.number({ label: "Width", name: "width" }),
+      ports.number({ label: "Height", name: "height" })
     ]
   })
+  .addNodeType({
+    type: "addNumbers",
+    label: "Add Numbers",
+    initialWidth: 150,
+    inputs: ports => [
+      ports.number({ name: "num1" }),
+      ports.number({ name: "num2" })
+    ],
+    outputs: ports => [ports.number({ name: "result" })]
+  })
+  .addNodeType({
+    type: "subtractNumbers",
+    label: "Subtract Numbers",
+    initialWidth: 150,
+    inputs: ports => [
+      ports.number({ name: "num1" }),
+      ports.number({ name: "num2" })
+    ],
+    outputs: ports => [ports.number({ name: "result" })]
+  })
+  .addNodeType({
+    type: "divideNumbers",
+    label: "Divide Numbers",
+    initialWidth: 150,
+    inputs: ports => [
+      ports.number({ name: "num1" }),
+      ports.number({ name: "num2" })
+    ],
+    outputs: ports => [ports.number({ name: "result" })]
+  })
+  .addNodeType({
+    type: "multiplyNumbers",
+    label: "Multiply Numbers",
+    initialWidth: 150,
+    inputs: ports => [
+      ports.number({ name: "num1" }),
+      ports.number({ name: "num2" })
+    ],
+    outputs: ports => [ports.number({ name: "result" })]
+  });
+
 export default config;
