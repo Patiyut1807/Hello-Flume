@@ -2,33 +2,55 @@ import { FlumeConfig, Colors, Controls } from "flume";
 
 
 const dataOptions = [
-  "dataA","dataB"
+  "LitCifar.py","LitImageNet.py","LitMNIST.py"
 ].map(c => ({
   value: c,
   label: `${c}`
 }));
+
 const modelOptions = [
-  "modelA","modelB"
+  "LitAlexNet.py","LitAutoEncoder.py","LitResNet50.py","LitResNet101.py","LitResNet152.py","LitViT.py","ResNet.py"
 ].map(c => ({
   value: c,
   label: `${c}`
 }));
+
+const dataSetOptions = [
+  "porjai","tcd-thai-food"
+].map(c => ({
+  value: c,
+  label: `${c}`
+}));
+
 const config = new FlumeConfig();
 config
+  .addPortType({
+    type: "datamodule",
+    name: "datamodule",
+    label: "Data Module",
+    color: Colors.green,
+    controls: [
+      Controls.select({
+        label: "datamodule",
+        name: "datamodule",
+        options: dataOptions,
+        placeholder: "[Select a Data Module]"
+      })
+    ]
+  })
   .addPortType({
     type: "dataset",
     name: "dataset",
     label: "DataSet",
-    color: Colors.green,
+    color: Colors.red,
     controls: [
       Controls.select({
         label: "dataset",
         name: "dataset",
-        options: dataOptions,
-        placeholder: "[Select a Data]"
+        options: dataSetOptions,
+        placeholder: "[Select a Data Set]"
       })
     ]
-
   })
   .addPortType({
     type: "model",
@@ -45,11 +67,11 @@ config
     ]
   })
   .addNodeType({
-    type: "dataset",
-    label: "dataset",
-    description: "Outputs a Dataset",
-    inputs: (ports) => [ports.dataset()],
-    outputs: (ports) => [ports.dataset()],
+    type: "datamodule",
+    label: "datamodule",
+    description: "Outputs a Data module",
+    inputs: (ports) => [ports.datamodule(),ports.dataset()],
+    outputs: (ports) => [ports.datamodule()],
   })
   .addNodeType({
     type: "model",
@@ -57,6 +79,13 @@ config
     description: "Outputs a Model",
     inputs: (ports) => [ports.model()],
     outputs: (ports) => [ports.model()],
+  })
+  .addNodeType({
+    type: "dataset",
+    label: "dataset",
+    description: "Outputs a Dataset",
+    inputs: (ports) => [ports.dataset()],
+    outputs: (ports) => [ports.dataset()],
   })
   .addRootNodeType({
     type: "trainfunc",
@@ -68,9 +97,9 @@ config
         label: "Model",
         noControls: true,
       }),
-      ports.dataset({
-        name: "dataset",
-        label: "DataSet",
+      ports.datamodule({
+        name: "datamodule",
+        label: "Data Module",
         noControls: true,
       }),
     ],
