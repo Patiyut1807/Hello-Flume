@@ -1,6 +1,5 @@
 import { FlumeConfig, Colors, Controls } from "flume";
 
-
 const dataOptions = [
   "LitCifar.py","LitImageNet.py","LitMNIST.py"
 ].map(c => ({

@@ -1,0 +1,66 @@
+{
+  "sVRc1E0fkO": {
+    "x": -147,
+    "y": 50.127838134765625,
+    "type": "trainfunc",
+    "width": 170,
+    "connections": {
+      "inputs": {
+        "datamodule": [{ "nodeId": "gm4CsPc0EU", "portName": "datamodule" }],
+        "model": [{ "nodeId": "dKlqttQRqk", "portName": "model" }]
+      },
+      "outputs": {}
+    },
+    "inputData": {
+      "model": { "model": "" },
+      "datamodule": { "datamodule": "" }
+    },
+    "root": true,
+    "id": "sVRc1E0fkO"
+  },
+  "L7PxwkrkFV": {
+    "id": "L7PxwkrkFV",
+    "x": -380.40625,
+    "y": 249.91384887695312,
+    "type": "dataset",
+    "width": 200,
+    "connections": {
+      "inputs": {},
+      "outputs": {
+        "dataset": [{ "nodeId": "gm4CsPc0EU", "portName": "dataset" }]
+      }
+    },
+    "inputData": { "dataset": { "dataset": "tcd-thai-food" } }
+  },
+  "gm4CsPc0EU": {
+    "id": "gm4CsPc0EU",
+    "x": -387.449781734754,
+    "y": 12.312826591625708,
+    "type": "datamodule",
+    "width": 200,
+    "connections": {
+      "inputs": {
+        "dataset": [{ "nodeId": "L7PxwkrkFV", "portName": "dataset" }]
+      },
+      "outputs": {
+        "datamodule": [{ "nodeId": "sVRc1E0fkO", "portName": "datamodule" }]
+      }
+    },
+    "inputData": {
+      "datamodule": { "datamodule": "LitImageNet.py" },
+      "dataset": { "dataset": "" }
+    }
+  },
+  "dKlqttQRqk": {
+    "id": "dKlqttQRqk",
+    "x": -394.0533447265625,
+    "y": -171.2984161376953,
+    "type": "model",
+    "width": 200,
+    "connections": {
+      "inputs": {},
+      "outputs": { "model": [{ "nodeId": "sVRc1E0fkO", "portName": "model" }] }
+    },
+    "inputData": { "model": { "model": "LitAutoEncoder.py" } }
+  }
+}
